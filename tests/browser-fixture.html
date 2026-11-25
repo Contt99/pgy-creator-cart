@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>蒲公英达人购物车测试页</title>
+  <link rel="stylesheet" href="../src/content/content.css">
+  <style>
+    body { margin: 0; padding: 40px; background: #f5f6f8; font-family: "Microsoft YaHei", sans-serif; }
+    table { width: 900px; border-collapse: collapse; background: #fff; }
+    th, td { padding: 18px; border-bottom: 1px solid #eee; text-align: left; }
+    .blogger-base { display: flex; align-items: center; gap: 12px; }
+    .blogger-base img { width: 48px; height: 48px; border-radius: 50%; }
+    .blogger-name { font-weight: 600; }
+    .base-info-item { margin-top: 5px; color: #777; }
+    .native-feedback-button { position: fixed; top: 230px; right: 12px; width: 48px; height: 58px; padding: 8px 6px 6px; border: 1px solid rgba(55, 55, 88, 0.1); border-radius: 8px; background: #fff; color: rgba(1, 1, 11, 0.71); font-size: 12px; line-height: 20px; }
+  </style>
+</head>
+<body>
+  <button type="button" class="native-feedback-button">反馈</button>
+  <table>
+    <thead><tr><th>达人</th><th>粉丝量</th><th>获赞与收藏</th><th>达人内容类别</th><th>达人所在地</th><th>曝光中位数</th><th>阅读中位数</th><th>互动中位数</th><th>图文笔记一口价</th><th>视频笔记一口价</th></tr></thead>
+    <tbody>
+      <tr class="creator-result-row">
+        <td>
+          <div class="blogger-base">
+            <img alt="测试达人春禾头像" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E">
+            <div>
+              <div class="blogger-name">测试达人春禾</div>
+              <div class="base-info-item blogger-redid">小红书号：<a>000000101</a></div>
+              <a href="https://pgy.xiaohongshu.com/solar/pre-trade/blogger-detail/000000000000000000000101">蒲公英详情</a>
+              <span class="creator-location-line">辽宁 大连 <span class="blogger-company__text">示例机构乙</span></span>
+            </div>
+          </div>
+        </td>
+        <td>12.6万</td>
+        <td>3.4万</td>
+        <td>美妆；护肤</td>
+        <td>辽宁 大连</td>
+        <td>8.6万</td>
+        <td>4.2万</td>
+        <td>6,520</td>
+        <td>¥8,000</td>
+        <td>¥15,000</td>
+      </tr>
+    </tbody>
+  </table>
+  <section class="creator-detail-metrics">
+    <div><span>达人标签</span><span>成分党；干皮护肤</span></div>
+    <div><span>粉丝性别分布</span><span>女性 82%；男性 18%</span></div>
+    <div><span>粉丝年龄分布</span><span>18岁以下 8%；18-24岁 36%；25-34岁 32%；35-44岁 16%；45岁以上 8%</span></div>
+    <div><span>粉丝地域分布</span><span>广东 20%；上海 15%；浙江 12%</span></div>
+  </section>
+  <script src="browser-fixture-chrome.js"></script>
+  <script src="../src/content/page-link-extractor.js"></script>
+  <script src="../src/shared/storage.js"></script>
+  <script src="../src/shared/xlsx.js"></script>
+  <link rel="stylesheet" href="../src/shared/review-ui.css">
+  <script src="../src/shared/review-ui.js"></script>
+  <script src="../src/content/content.js"></script>
+  <script src="browser-fixture-report.js"></script>
+</body>
+</html>

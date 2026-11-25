@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>侧边购物车按钮布局测试</title>
+  <link rel="stylesheet" href="../src/content/content.css">
+  <style>
+    body { margin: 0; padding: 32px; background: #f6f7f9; font-family: "Microsoft YaHei", sans-serif; }
+    .creator-card { width: 428px; padding: 12px 0 18px; background: #fff; border-bottom: 1px solid #eee; }
+    .creator-main { display: grid; grid-template-columns: 96px minmax(0, 1fr); column-gap: 24px; }
+    .avatar-area { padding-top: 34px; text-align: center; }
+    .avatar-area img { display: block; width: 80px; height: 80px; margin: 0 auto; border-radius: 50%; background: #dcecef; }
+    .quality-badge { display: inline-block; margin-top: -2px; padding: 2px 7px; border-radius: 10px; background: #ff4d69; color: #fff; font-size: 12px; }
+    .creator-name { font-size: 20px; font-weight: 600; white-space: nowrap; }
+    .blogger-redid { display: flex; align-items: center; gap: 8px; margin-top: 16px; color: #8a8d93; font-size: 16px; white-space: nowrap; }
+    .blogger-redid a { color: #3975f6; font-weight: 600; text-decoration: none; }
+    .creator-description { margin-top: 12px; color: #777b82; font-size: 16px; white-space: nowrap; }
+    .tags { display: flex; gap: 12px; margin-top: 28px; }
+    .tags span { padding: 3px 7px; border-radius: 5px; background: #f3f3f4; color: #666; }
+    #layout-report { margin-top: 24px; white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+  <article class="creator-card">
+    <div class="creator-main">
+      <div class="avatar-area">
+        <img class="creator-avatar" alt="测试达人头像" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Crect width='80' height='80' fill='%23dcecef'/%3E%3Ccircle cx='40' cy='31' r='17' fill='%239bc0c8'/%3E%3Cpath d='M14 78c4-22 48-22 52 0' fill='%239bc0c8'/%3E%3C/svg%3E">
+        <span class="quality-badge">优质博主</span>
+      </div>
+      <div>
+        <div class="creator-name">演示达人Echo</div>
+        <div class="base-info-item blogger-redid"><span>小红书号：</span><a href="https://pgy.xiaohongshu.com/creator/0000000202">0000000202</a><span>▢</span></div>
+        <div class="creator-description">通勤分享、居家日常</div>
+      </div>
+    </div>
+    <div class="tags"><span>生活记录</span><span>vlog</span><span>职场生活</span><span>韩系</span></div>
+  </article>
+  <pre id="layout-report">waiting</pre>
+  <script>
+    const cardBefore = document.querySelector('.creator-card').getBoundingClientRect();
+    const redIdBefore = document.querySelector('.blogger-redid').getBoundingClientRect();
+    window.pgyLayoutBaseline = { cardHeight: cardBefore.height, redIdHeight: redIdBefore.height };
+  </script>
+  <script src="browser-fixture-chrome.js"></script>
+  <script src="../src/shared/storage.js"></script>
+  <script src="../src/shared/xlsx.js"></script>
+  <script src="../src/content/content.js"></script>
+  <script>
+    setTimeout(() => {
+      const card = document.querySelector('.creator-card').getBoundingClientRect();
+      const redId = document.querySelector('.blogger-redid').getBoundingClientRect();
+      const inlineButton = document.querySelector('.pgy-cart-inline-button');
+      const actions = document.querySelector('#pgy-cart-floating-actions');
+      const addButton = document.querySelector('#pgy-cart-add-button');
+      const cartButton = document.querySelector('#pgy-cart-floating-button');
+      const addIcon = addButton && addButton.querySelector('.pgy-cart-side-icon');
+      const cartIcon = cartButton && cartButton.querySelector('.pgy-cart-side-icon');
+      const actionsRect = actions && actions.getBoundingClientRect();
+      const addRect = addButton && addButton.getBoundingClientRect();
+      const cartRect = cartButton && cartButton.getBoundingClientRect();
+      const addIconRect = addIcon && addIcon.getBoundingClientRect();
+      const cartIconRect = cartIcon && cartIcon.getBoundingClientRect();
+      const report = {
+        inlineButtonRemoved: !inlineButton,
+        sideActionsCreated: Boolean(actions && addButton && cartButton),
+        fixedSideRail: Boolean(actions && getComputedStyle(actions).position === 'fixed'),
+        addButtonSize: addRect ? [addRect.width, addRect.height] : [],
+        cartButtonSize: cartRect ? [cartRect.width, cartRect.height] : [],
+        iconSizes: addIconRect && cartIconRect
+          ? [[addIconRect.width, addIconRect.height], [cartIconRect.width, cartIconRect.height]]
+          : [],
+        addAboveCart: Boolean(addRect && cartRect && addRect.bottom < cartRect.top),
+        railContainsBothButtons: Boolean(actionsRect && addRect && cartRect
+          && addRect.top >= actionsRect.top
+          && cartRect.bottom <= actionsRect.bottom),
+        cardHeightUnchanged: Math.abs(card.height - window.pgyLayoutBaseline.cardHeight) < 0.5,
+        redIdHeightUnchanged: Math.abs(redId.height - window.pgyLayoutBaseline.redIdHeight) < 0.5
+      };
+      const booleanChecksPass = Object.entries(report).every(([key, value]) => (
+        key === 'addButtonSize' || key === 'cartButtonSize' || key === 'iconSizes' || value === true
+      ));
+      report.pass = booleanChecksPass
+        && report.addButtonSize[0] === 48
+        && report.addButtonSize[1] === 58
+        && report.cartButtonSize[0] === 48
+        && report.cartButtonSize[1] === 58
+        && report.iconSizes.every(([width, height]) => width === 20 && height === 20);
+      const output = document.getElementById('layout-report');
+      output.dataset.pass = String(report.pass);
+      output.textContent = JSON.stringify(report, null, 2);
+    }, 500);
+  </script>
+</body>
+</html>

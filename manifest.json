@@ -1,0 +1,47 @@
+{
+  "manifest_version": 3,
+  "name": "蒲公英达人购物车",
+  "version": "0.3.16",
+  "description": "在蒲公英平台按小红书号收藏达人，并导出 Excel。",
+  "permissions": [
+    "storage",
+    "unlimitedStorage"
+  ],
+  "host_permissions": [
+    "https://pgy.xiaohongshu.com/*"
+  ],
+  "action": {
+    "default_title": "达人购物车",
+    "default_popup": "src/popup/popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://pgy.xiaohongshu.com/*"
+      ],
+      "js": [
+        "src/content/json-response-observer.js",
+        "src/content/page-link-extractor.js",
+        "src/content/list-identity.js"
+      ],
+      "run_at": "document_start",
+      "world": "MAIN"
+    },
+    {
+      "matches": [
+        "https://pgy.xiaohongshu.com/*"
+      ],
+      "css": [
+        "src/content/content.css",
+        "src/shared/review-ui.css"
+      ],
+      "js": [
+        "src/shared/storage.js",
+        "src/shared/xlsx.js",
+        "src/shared/review-ui.js",
+        "src/content/content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ]
+}
